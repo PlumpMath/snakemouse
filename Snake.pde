@@ -78,7 +78,6 @@ class Snake {
   void updatePosition() {
     PVector curPosition = getHead();
     PVector newPosition = new PVector(mouseX - curPosition.x, mouseY - curPosition.y).normalize().mult(speed).add(curPosition);
-    println(newPosition.toString());
     for (int i = segments.size() - 1; i >= 0; --i) {
       Line segment = segments.get(i);
       segment.x1 = newPosition.x;
