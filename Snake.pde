@@ -1,7 +1,7 @@
 class Snake {
   ArrayList<Line> segments;
   float lastLineTime;
-  color segmentColour;
+  int segmentColour;
   float segmentWidth;
   int maxSegments;
   int curSegments;
@@ -24,7 +24,7 @@ class Snake {
    * Considers adding a new segment by looking at the game state.
    * Returns whether or not a new segment was added.
    */
-  boolean addSegment() {
+  public boolean addSegment() {
     // Don't add new segment if we're at the max length
     if (curSegments >= maxSegments) {
       return false;
@@ -66,7 +66,7 @@ class Snake {
   /**
    * Renders the snake!
    */
-  void render() {
+  public void render() {
     for (Line l : snake.segments) {
       l.render(segmentColour, segmentWidth);
     }
@@ -75,9 +75,9 @@ class Snake {
   /**
    * Pulls every segment so the head is now at (x, y)
    */
-  void updatePosition() {
+  public void updatePosition(PVector mousePosition) {
     PVector curPosition = getHead();
-    PVector newPosition = new PVector(mouseX - curPosition.x, mouseY - curPosition.y).normalize().mult(speed).add(curPosition);
+    PVector newPosition = new PVector(mousePosition.x - curPosition.x, mousePosition.y - curPosition.y).normalize().mult(speed).add(curPosition);
     for (int i = segments.size() - 1; i >= 0; --i) {
       Line segment = segments.get(i);
       segment.x1 = newPosition.x;
@@ -94,7 +94,7 @@ class Snake {
     }
   }
   
-  PVector getHead() {
+  public PVector getHead() {
     Line head = segments.get(segments.size() - 1);
     return new PVector(head.x1, head.y1); 
   }

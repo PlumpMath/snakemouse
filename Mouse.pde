@@ -2,18 +2,29 @@ class Mouse {
   PShape body;
   float angle;
   float maximumRotation = TAU/32;
+  PVector position;
 
   Mouse() {
-    this.body = loadShape("mouse.svg");
+    fill(255);
+    noStroke();
+    this.body = createShape(TRIANGLE, 0, -10, 0, 10, 30, 0);
     this.angle = 0;
+    position = new PVector(mouseX, mouseY);
   }
 
-  void render() {
+  public void update() {
     updateAngle();
-    shape(body, mouseX, mouseY);
+    position.x = mouseX;
+    position.y = mouseY;
+    cullVector(position, width>>1, height>>1, circleDiameter>>1);
+  }
+
+  public void render() {
+    update();
+    shape(body, position.x, position.y);
   }
   
-  void updateAngle() {
+  public void updateAngle() {
     PVector mouseDirection = new PVector(mouseX - pmouseX, mouseY - pmouseY);
     
     if(mouseDirection.mag() < 2)
@@ -25,20 +36,5 @@ class Mouse {
     body.rotate(rotation);
     angle += rotation;
     angle %= TAU;
-  }
-
-  void squeak(Snake snake) {
-    PVector dangerNoodle = snake.getHead();
-    PVector vectorToDangerNoodle = new PVector(mouseX - dangerNoodle.x, mouseY - dangerNoodle.y);
-    float distanceToDangerNoodle = vectorToDangerNoodle.mag();
-    if (distanceToDangerNoodle < 100) {
-      stroke(255, 0, 0);
-      strokeWeight(1);
-      noFill();
-      float threatAngle = PI + vectorToDangerNoodle.heading();
-      for(int i = 70; i <= 150; i += 20) {
-        arc(mouseX, mouseY, i, i, threatAngle - PI/8, threatAngle + PI/8);
-      }
-    }
   }
 }
